@@ -1,0 +1,470 @@
+:root {
+    --success-green: #58cc02; --success-green-dark: #45a001;
+    --error-red: #ff4b4b; --error-red-dark: #d63030;
+    --gray-light: #e5e5e5; --text: #4b4b4b;
+    --blue: #1cb0f6; --blue-dark: #1588bc;
+    --purple: #a855f7; --purple-dark: #7e22ce;
+    --pink: #ff4b91; --pink-dark: #d63374;
+    --orange: #ff9600; --orange-dark: #e68600;
+    --yellow: #ffc800; --yellow-dark: #e5a400;
+    --cyan: #2be0d8; --cyan-dark: #1cbdb5;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation; /* Disables double-tap to zoom, making taps instant */
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Prevents the "bounce" scroll on iOS */
+}
+
+body { 
+    margin: 0; 
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif; 
+    background: #f0f2f5; /* Desktop background */
+    color: var(--text); 
+    height: 100%; 
+    width: 100%;
+    overflow: hidden; 
+    position: fixed;
+    display: flex;
+    justify-content: center; 
+}
+
+#app-shell { 
+    width: 100%;
+    max-width: 500px;
+    height: 100%; /* Changed from 100dvh to 100% for stability */
+    background: #fff; 
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.05); 
+    border-left: 1px solid #eee; 
+    border-right: 1px solid #eee;
+    padding-top: env(safe-area-inset-top);
+    overflow: hidden;
+}
+
+.hidden { display: none !important; }
+
+h1, h2, h3, .node-label, .draggable-chip, .unit-tag, .option-btn, .match-btn {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+@media (max-width: 500px) {
+    body {
+        background: #fff;
+    }
+    #app-shell {
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+        max-width: 100%; /* Use full width on mobile */
+    }
+}
+
+/* MAP VIEW */
+#map-view { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.map-header { padding: 15px; text-align: center; border-bottom: 2px solid var(--gray-light); background: #fff; z-index: 100; }
+.top-stats { display: flex; justify-content: center; gap: 25px; font-weight: 800; color: #777; }
+.reset-link { background:none; border:none; color:var(--blue); cursor:pointer; font-size:0.75rem; text-decoration: underline; }
+
+/* THE PATH (CENTERED) */
+.path-scroll-area { 
+    flex-grow: 1; 
+    overflow-y: auto; 
+    padding: 0 0 100px 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    -webkit-overflow-scrolling: touch;
+    /* This creates a vertical line in the center to act as the "road" */
+    background-image: radial-gradient(#e5e5e5 2px, transparent 2px);
+    background-size: 100% 40px; 
+    background-position: center;
+}
+
+/* CHAPTER BANNERS (Restored to your exact original look) */
+.section-banner { 
+    width: 92%; 
+    min-height: 80px;
+    color: white; 
+    padding: 16px 20px; 
+    border-radius: 18px; 
+    margin: 30px 0 15px 0; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+    text-align: left; 
+    box-sizing: border-box;
+}
+.section-banner.theme-blue { background: var(--blue); box-shadow: 0 4px 0 var(--blue-dark); }
+.section-banner.theme-purple { background: var(--purple); box-shadow: 0 4px 0 var(--purple-dark); }
+.section-banner.theme-pink { background: var(--pink); box-shadow: 0 4px 0 var(--pink-dark); }
+.section-banner.theme-orange { background: var(--orange); box-shadow: 0 4px 0 var(--orange-dark); }
+.section-banner.theme-yellow { background: var(--yellow); box-shadow: 0 4px 0 var(--yellow-dark); }
+.section-banner.theme-cyan { background: var(--cyan); box-shadow: 0 4px 0 var(--cyan-dark); }
+
+.banner-title { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; }
+.banner-subtitle { font-weight: 400; font-size: 0.75rem; opacity: 0.9; line-height: 1.3; }
+
+/* UNIT DIVIDER (The 2nd Level - Something Else) */
+.unit-divider {
+    width: 100%;
+    margin: 30px 0 10px 0;
+    text-align: center;
+    position: relative;
+}
+.unit-divider::before {
+    content: ""; position: absolute; top: 50%; left: 15%; right: 15%; height: 2px; background: var(--gray-light); z-index: 1;
+}
+.unit-tag {
+    position: relative; z-index: 2; background: #fff; padding: 0 12px; color: #bbb; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+}
+
+/* PATH NODES (Fixed Zig-Zag for 3-tier structure) */
+.path-node { 
+    text-align: center; 
+    margin: 15px 0; /* Vertical spacing between nodes */
+    width: 110px; 
+    transition: transform 0.2s; 
+    cursor: pointer; 
+    background: transparent; 
+    border: none;
+    position: relative;
+    z-index: 2; /* Stay above the background line */
+}
+
+.node-icon { 
+    width: 75px; height: 70px; border-radius: 50%; background: #fff; border: 2px solid var(--gray-light); 
+    display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #ccc; 
+    box-shadow: 0 6px 0 var(--gray-light); margin: 0 auto; transition: transform 0.1s, box-shadow 0.1s;
+}
+.node-label { margin-top: 8px; font-weight: 800; font-size: 0.8rem; color: var(--text); }
+
+.unlocked.theme-blue .node-icon { background: var(--blue); border-color: var(--blue-dark); color: white; box-shadow: 0 6px 0 var(--blue-dark); }
+.unlocked.theme-purple .node-icon { background: var(--purple); border-color: var(--purple-dark); color: white; box-shadow: 0 6px 0 var(--purple-dark); }
+.unlocked.theme-pink .node-icon { background: var(--pink); border-color: var(--pink-dark); color: white; box-shadow: 0 6px 0 var(--pink-dark); }
+.unlocked.theme-orange .node-icon { background: var(--orange); border-color: var(--orange-dark); color: white; box-shadow: 0 6px 0 var(--orange-dark); }
+.unlocked.theme-yellow .node-icon { background: var(--yellow); border-color: var(--yellow-dark); color: white; box-shadow: 0 6px 0 var(--yellow-dark); }
+.unlocked.theme-cyan .node-icon { background: var(--cyan); border-color: var(--cyan-dark); color: white; box-shadow: 0 6px 0 var(--cyan-dark); }
+.unlocked:active .node-icon { 
+    transform: translateY(4px); /* Only move down, don't reset X */
+    box-shadow: 0 2px 0 rgba(0,0,0,0.1); 
+}
+.locked { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: white; width: 85%; max-width: 380px; max-height: 85vh; overflow-y: auto; border-radius: 25px; padding: 30px; text-align: center; position: relative; }
+.close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; color: #ccc; }
+#modal-icon-circle { width: 70px; height: 70px; background: var(--blue); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; }
+.objectives-container { text-align: left; background: #f8f9fa; padding: 15px; border-radius: 15px; margin: 20px 0; }
+.objectives-container h3 { font-size: 0.7rem; text-transform: uppercase; color: #888; margin: 0 0 5px 0; }
+#modal-objectives { padding-left: 20px; font-size: 0.9rem; line-height: 1.4; margin: 0; }
+.lesson-nav { padding: 15px; display: flex; align-items: center; gap: 15px; }
+#lesson-view {
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* Stacks Nav, Stage, and Footer */
+    overflow: hidden;
+    position: relative;
+}
+#close-lesson { border: none; background: none; font-size: 1.5rem; color: #afafaf; cursor: pointer; }
+
+/* BUTTONS (Pressing Logic Restored) */
+.option-btn, .primary-btn, #next-btn { width: 100%; padding: 16px; border-radius: 15px; font-weight: 700; cursor: pointer; border: none; transition: 0.1s; position: relative; }
+
+.primary-btn { background: var(--blue); color: white; box-shadow: 0 5px 0 var(--blue-dark); margin-bottom: 12px; font-size: 1rem;}
+.primary-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--blue-dark); }
+
+.option-btn { min-height: 55px; height: auto; background: white; border: 2px solid var(--gray-light); box-shadow: 0 4px 0 var(--gray-light); margin-bottom: 12px; color: var(--text); font-size: 1rem; }
+.option-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--gray-light); }
+
+#next-btn { font-size: 1.1rem; color: white; margin-top: 10px; font-size: 1.1rem; }
+.correct #next-btn { background: var(--success-green); box-shadow: 0 5px 0 var(--success-green-dark); }
+.incorrect #next-btn { background: var(--error-red); box-shadow: 0 5px 0 var(--error-red-dark); }
+#next-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+
+/* All other styles (Stage, Feedback, Flashcards, Fill, Match) remain exactly as in your reference */
+#stage { 
+    flex: 1; 
+    padding: 20px; 
+    padding-bottom: calc(140px + env(safe-area-inset-bottom)); 
+    text-align: center; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+    width: 100%; 
+    -webkit-overflow-scrolling: touch;
+}
+
+#stage p, 
+#stage span, 
+#stage a, 
+#stage h2,
+#stage h3,
+#stage .concept-card,
+#stage div {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere; 
+    word-break: break-word;
+    
+    /* This is your original code restored: */
+    /* It ensures students can still highlight medical terms in these areas */
+    user-select: text; 
+    -webkit-user-select: text; /* Safari support */
+}
+
+#stage a {
+    word-break: break-all;
+    color: var(--blue);
+}
+.progress-container { flex-grow: 1; height: 14px; background: var(--gray-light); border-radius: 10px; overflow: hidden; }
+#progress-bar { width: 0%; height: 100%; background: var(--success-green); transition: 0.4s; }
+#feedback-bar { 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    /* This padding adds 20px of space, PLUS the height of the home bar on mobile */
+    padding: 20px 20px calc(20px + env(safe-area-inset-bottom)) 20px; 
+    
+    transform: translateY(100%); 
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+    z-index: 100; 
+    visibility: hidden;
+    
+    /* Ensure the border doesn't make it look floating */
+    border-top: 4px solid rgba(0,0,0,0.1); 
+}
+#feedback-bar.show { transform: translateY(0); visibility: visible; }
+.correct { background: #d7ffb8 !important; border-top: 4px solid #a5d6a7; color: #2d5a01; }
+.incorrect { background: #ffdfe0 !important; border-top: 4px solid #ff9393; color: #911111; }
+/* ... (Keep your Flashcard, Fill, and Match CSS from the bottom of your file) */
+
+.sort-pool { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 15px; min-height: 60px; background: #f9f9f9; border-radius: 15px; border: 2px dashed #ddd; margin-bottom: 20px; }
+.bucket-container { 
+    display: flex; 
+    flex-wrap: wrap;    /* This is the key: it allows items to move to the next line */
+    gap: 10px; 
+    margin-bottom: 20px; 
+    justify-content: center; /* Centers the buckets if you have an odd number */
+}
+.sort-bucket { 
+    /* 
+       flex-grow: 1 (fills space)
+       flex-shrink: 0 (don't get squished)
+       flex-basis: calc(50% - 10px) (aims for 2 per row, accounting for gap)
+    */
+    flex: 1 1 calc(50% - 10px);
+    
+    /* Optional: Ensure buckets don't get TOO small on tiny screens */
+    min-width: 140px; 
+    
+    min-height: 120px; 
+    background: white; 
+    border: 2px solid #ddd; 
+    border-radius: 15px; 
+    padding: 10px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    box-sizing: border-box; /* Ensures padding doesn't add to the width */
+}
+.sort-bucket:active {
+    background-color: #f0f8ff;
+}
+.draggable-chip {
+    padding: 10px 15px;
+    background: white;
+    border: 2px solid var(--gray-light);
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--gray-light);
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.1s; /* Fast transition for snapping */
+    width: fit-content;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.order-slot { min-height: 45px; border: 2px dashed #ddd; border-radius: 10px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; }
+
+/* Flashcard Container */
+.flashcard-scene { 
+    width: 90%;
+    max-width: 320px;
+    height: 320px; 
+    perspective: 600px; 
+    margin: 20px auto; 
+    cursor: pointer;
+}
+.flashcard { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; }
+.flashcard.is-flipped { transform: rotateY(180deg); }
+.flashcard-face { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 20px; padding: 20px; box-sizing: border-box; box-shadow: 0 8px 16px rgba(0,0,0,0.1); border: 2px solid var(--gray-light); background: white;}
+.flashcard-front { color: var(--blue); font-size: 1.8rem; font-weight: 800; }
+.flashcard-back { transform: rotateY(180deg); font-size: 1rem; color: var(--text); text-align: center; }
+.flashcard-extra { margin-top: 15px; font-size: 0.8rem; color: #777; padding-top: 10px; border-top: 1px solid #eee; font-style: italic; }
+
+.fill-blank {
+    border-bottom: 2px solid var(--blue); /* This is your ONLY line now */
+    padding: 0 10px;
+    color: var(--blue);
+    font-weight: 800;
+    min-width: 120px;       /* Keeps the line long even when empty */
+    display: inline-block;
+    text-align: center;
+    vertical-align: bottom; /* Aligns the line with the rest of the text */
+    margin: 0 5px;
+}
+
+/* Fill in the blank refinements */
+.fill-instruction { font-size: 0.75rem; color: #aaa; text-transform: uppercase; margin-bottom: 15px; font-weight: 800; }
+
+.clickable-blank {
+    cursor: pointer;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 0 4px;
+    transition: all 0.2s;
+}
+
+.clickable-blank.filled {
+    background: transparent;
+    border-bottom-color: var(--blue);
+}
+
+.word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.fill-option {
+    width: auto !important; /* Allow buttons to shrink to text size */
+    padding: 10px 20px !important;
+    margin: 0 !important;
+}
+
+.used-option {
+    opacity: 0.2;
+    transform: scale(0.9);
+}
+
+.locked-btn {
+    transition: opacity 0.3s;
+}
+
+/* Optional: Makes the review text stand out more */
+.review-text {
+    color: var(--error-red);
+    font-weight: 800;
+    font-size: 0.8rem;
+    margin-bottom: 15px; /* Adds space below the "Reviewing Mistake" text */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.match-container { display: flex; gap: 15px; margin-top: 20px; width: 100%; }
+.match-column { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.match-btn { 
+    font-size: 0.85rem !important; 
+    padding: 12px 8px !important; 
+    min-height: 60px;
+    transition: all 0.2s;
+    border: 2px solid var(--gray-light);
+}
+
+/* Style when a button is clicked but not yet paired */
+.selected-match { 
+    border-color: var(--purple) !important; 
+    background-color: #f5f3ff !important; 
+}
+
+/* Style when a pair is successfully formed */
+.matched { 
+    border-color: var(--blue) !important; 
+    background-color: #e3f2fd !important;
+    font-weight: bold;
+}
+
+/* --- LIGHTBOX & ZOOM STYLES --- */
+.lightbox {
+    position: fixed;
+    z-index: 9999; /* Higher than modal */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.lightbox.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-content {
+    max-width: 95%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lightbox-img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 4px;
+    /* Remove the old transition so it doesn't feel 'laggy' when pinching */
+    transition: transform 0.1s ease-out; 
+    cursor: zoom-in;
+    object-fit: contain;
+    /* CRITICAL: Prevents the phone from scrolling the page while pinching the image */
+    touch-action: none; 
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* The Zoomed-in state */
+#lightbox-img.zoomed {
+    transform: scale(2.5); /* Good for pathology detail */
+    cursor: zoom-out;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 40px;
+    right: 25px;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
