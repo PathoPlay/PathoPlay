@@ -147,7 +147,7 @@ function finishModule() {
                 <i class="fas fa-star" style="font-size:2.5rem;color:#ffce00;margin:0 10px;"></i>
                 <i class="fas fa-star" style="font-size:2rem;color:#ffce00"></i>`;
             feedbackTierTitle = "Board Certified!";
-            feedbackTierText = "Incredible job. You seamlessly connected the cell's structure, signaling, and environment. You are more than ready to tackle Cell Injury and Disease!";
+            feedbackTierText = "Incredible performance! You have demonstrated a deep understanding of the pathophysiological mechanisms and clinical correlations in this chapter. You are more than ready for the next challenge.";
             titleColor = "var(--success-green)";
         } else if (scorePercent >= 70) { // Tier 2: Resident
             starsHtml = `
@@ -155,7 +155,7 @@ function finishModule() {
                 <i class="fas fa-star" style="font-size:2.5rem;color:#ffce00;margin:0 10px;"></i>
                 <i class="far fa-star" style="font-size:2rem;color:#ccc"></i>`;
             feedbackTierTitle = "Great Clinical Reasoning!";
-            feedbackTierText = "You have a solid grasp of the normal cell, but a few connections got crossed. Let’s review your missed concepts so you are 100% ready for the pathology chapters.";
+            feedbackTierText = "Strong work! You have a solid grasp of these core concepts, though a few nuances still need sharpening. Review your missed points to achieve total mastery of this topic.";
             titleColor = "var(--orange)";
         } else { // Tier 3: Intern
             starsHtml = `
@@ -163,7 +163,7 @@ function finishModule() {
                 <i class="far fa-star" style="font-size:2.5rem;color:#ccc;margin:0 10px;"></i>
                 <i class="far fa-star" style="font-size:2rem;color:#ccc"></i>`;
             feedbackTierTitle = "Good Effort!";
-            feedbackTierText = "The human cell is a highly complex machine, and integrating all these parts takes practice. Let's do a quick focused review on your weak spots before moving forward. You've got this!";
+            feedbackTierText = "Pathology is a complex field, and integrating these intricate processes takes practice. Let's do a focused review of the key concepts to build a stronger foundation. You've got this!";
             titleColor = "var(--error-red)";
         }
 
@@ -220,7 +220,7 @@ function finishModule() {
                     <p style="font-size:1rem; color:#555; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto;">${feedbackTierText}</p>
                     <div style="background:#fff3f3; padding:12px; border-radius:12px; border:1px solid #ffe3e3; margin-bottom:20px;">
                         <div style="font-size:1.2rem; font-weight:bold; color:var(--error-red);">${correctFirstTryCount} / ${totalQuestionsCount} (${scorePercent}%)</div>
-                        <div style="font-size:0.85rem; color:#777; margin-top:4px;">Minimum score of <b>80%</b> on first attempts required to unlock Chapter 2.</div>
+                        <div style="font-size:0.85rem; color:#777; margin-top:4px;">Minimum score of <b>80%</b> required to unlock the next chapter.</div>
                     </div>
                     ${diagnosticHtml}
                     <div style="margin-top:25px; display:flex; gap:10px; justify-content:center;">
