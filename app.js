@@ -183,6 +183,7 @@ function finishModule() {
         }
 
         if (canProgress) {
+            feedbackSounds.complete.play();
             // Unlock next module
             let nextID = (data && data.next) ? data.next : (() => {
                 const parts = currentActiveID.split('.');
@@ -232,6 +233,7 @@ function finishModule() {
 
     // ─── CASE B: THIS IS A REGULAR LESSON NODE (Standard No-Stars Layout) ───
     } else {
+        feedbackSounds.complete.play();
         // Automatically unlock next linear module index (e.g. 0.1 -> 0.2)
         let nextID;
         if (data && data.next) {
@@ -732,6 +734,8 @@ function toggleZoom(event) {
 // ─── FEEDBACK & XP ────────────────────────────────────────────────────────────
 
 function showFeedback(corr, title, msg) {
+    playFeedback(corr); 
+
     const bar = document.getElementById('feedback-bar');
     bar.className = "show " + (corr ? "correct" : "incorrect");
     document.getElementById('feedback-title').innerHTML = title;
@@ -763,4 +767,25 @@ function addToMistakes(d) {
     d.alreadyAddedToMistakes = true;
     review.alreadyAddedToMistakes = false;
     currentModule.push(review);
+}
+
+// Define the audio objects
+const feedbackSounds = {
+    correct: new Audio('assets/audio/correct.mp3'),
+    incorrect: new Audio('assets/audio/incorrect.mp3'),
+    complete: new Audio('assets/audio/lesson_complete.mp3')
+};
+
+/**
+ * Plays the feedback sound for quiz questions
+ * @param {boolean} isCorrect - Whether the answer was right or wrong
+ */
+function playFeedback(isCorrect) {
+    const sound = isCorrect ? feedbackSounds.correct : feedbackSounds.incorrect;
+    
+    // Reset sound to start in case user clicks rapidly
+    sound.currentTime = 0; 
+    sound.play().catch(error => {
+        console.log("Audio playback delayed until user interaction.");
+    });
 }
