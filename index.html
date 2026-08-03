@@ -9,6 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <div id="app-shell">
@@ -664,6 +665,129 @@
                     <div class="node-icon"><i class="fas fa-plane-departure"></i></div>
                     <div class="node-label">4. Metastasis</div>
                 </div>
+
+                <!-- UNIT 3 -->
+                <div class="unit-divider">
+                    <span class="unit-tag">Unit 3 • EPIDEMIOLOGY AND CARCINOGENIC AGENTS</span>
+                </div>
+
+                <!-- Unit 3 Nodes -->
+                <div id="node-5.3.1" class="path-node locked theme-cyan" onclick="showPreview('5.3.1')">
+                    <div class="node-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div class="node-label">1. Epidemiology</div>
+                </div>
+                <div id="node-5.3.2" class="path-node locked theme-cyan" onclick="showPreview('5.3.2')">
+                    <div class="node-icon"><i class="fas fa-flask"></i></div>
+                    <div class="node-label">2. Chemical Carcinogenesis</div>
+                </div>
+                <div id="node-5.3.3" class="path-node locked theme-cyan" onclick="showPreview('5.3.3')">
+                    <div class="node-icon"><i class="fas fa-virus"></i></div>
+                    <div class="node-label">3. Microbial Carcinogenesis</div>
+                </div>
+                <div id="node-5.3.4" class="path-node locked theme-cyan" onclick="showPreview('5.3.4')">
+                    <div class="node-icon"><i class="fas fa-radiation"></i></div>
+                    <div class="node-label">4. Radiation Carcinogenesis</div>
+                </div>
+
+                <!-- UNIT 4 -->
+                <div class="unit-divider">
+                    <span class="unit-tag">Unit 4 • HALLMARKS/MOLECULAR BASIS OF CANCER</span>
+                </div>
+
+                <!-- Unit 4 Nodes -->
+                <div id="node-5.4.1" class="path-node locked theme-cyan" onclick="showPreview('5.4.1')">
+                    <div class="node-icon"><i class="fas fa-microscope"></i></div>
+                    <div class="node-label">1. Principles of Carcinogenesis</div>
+                </div>
+                <div id="node-5.4.2" class="path-node locked theme-cyan" onclick="showPreview('5.4.2')">
+                    <div class="node-icon"><i class="fas fa-dna"></i></div>
+                    <div class="node-label">2. Oncogenes</div>
+                </div>
+                <div id="node-5.4.3" class="path-node locked theme-cyan" onclick="showPreview('5.4.3')">
+                    <div class="node-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="node-label">3. Tumor Suppressor Genes</div>
+                </div>
+                <div id="node-5.4.4" class="path-node locked theme-cyan" onclick="showPreview('5.4.4')">
+                    <div class="node-icon"><i class="fas fa-running"></i></div>
+                    <div class="node-label">4. Evasion of Apoptosis</div>
+                </div>
+                <div id="node-5.4.5" class="path-node locked theme-cyan" onclick="showPreview('5.4.5')">
+                    <div class="node-icon"><i class="fas fa-infinity"></i></div>
+                    <div class="node-label">5. Limitless Replicative Potential (Telomerase)</div>
+                </div>
+                <div id="node-5.4.6" class="path-node locked theme-cyan" onclick="showPreview('5.4.6')">
+                    <div class="node-icon"><i class="fas fa-project-diagram"></i></div>
+                    <div class="node-label">6. Tumor Angiogenesis</div>
+                </div>
+                <div id="node-5.4.7" class="path-node locked theme-cyan" onclick="showPreview('5.4.7')">
+                    <div class="node-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                    <div class="node-label">7. The Invasion & Metastasis Cascade</div>
+                </div>
+                <div id="node-5.4.8" class="path-node locked theme-cyan" onclick="showPreview('5.4.8')">
+                    <div class="node-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="node-label">8. Altered Cellular Metabolism (The Warburg Effect)</div>
+                </div>
+
+                <!-- UNIT 5 -->
+                <div class="unit-divider">
+                    <span class="unit-tag">Unit 5 • HOST RESPONSE & TUMOR IMMUNITY</span>
+                </div>
+
+                <!-- Unit 5 Nodes -->
+                <div id="node-5.5.1" class="path-node locked theme-cyan" onclick="showPreview('5.5.1')">
+                    <div class="node-icon"><i class="fas fa-bullseye"></i></div>
+                    <div class="node-label">1. Tumor Antigens</div>
+                </div>
+                <div id="node-5.5.2" class="path-node locked theme-cyan" onclick="showPreview('5.5.2')">
+                    <div class="node-icon"><i class="fas fa-shield-virus"></i></div>
+                    <div class="node-label">2. Immune Effector Mechanisms</div>
+                </div>
+                <div id="node-5.5.3" class="path-node locked theme-cyan" onclick="showPreview('5.5.3')">
+                    <div class="node-icon"><i class="fas fa-eye-slash"></i></div>
+                    <div class="node-label">3. Immune Evasion</div>
+                </div>
+
+                <!-- UNIT 6 -->
+                <div class="unit-divider">
+                    <span class="unit-tag">Unit 6 • CLINICAL ASPECTS OF NEOPLASIA</span>
+                </div>
+
+                <!-- Unit 6 Nodes -->
+                <div id="node-5.6.1" class="path-node locked theme-cyan" onclick="showPreview('5.6.1')">
+                    <div class="node-icon"><i class="fas fa-weight"></i></div>
+                    <div class="node-label">1. Local, Hormonal Effects and Cancer Cachexia</div>
+                </div>
+                <div id="node-5.6.2" class="path-node locked theme-cyan" onclick="showPreview('5.6.2')">
+                    <div class="node-icon"><i class="fas fa-broadcast-tower"></i></div>
+                    <div class="node-label">2. Paraneooplastic Syndromes</div>
+                </div>
+                <div id="node-5.6.3" class="path-node locked theme-cyan" onclick="showPreview('5.6.3')">
+                    <div class="node-icon"><i class="fas fa-microscope"></i></div>
+                    <div class="node-label">3. Tumor Grading</div>
+                </div>
+                <div id="node-5.6.4" class="path-node locked theme-cyan" onclick="showPreview('5.6.4')">
+                    <div class="node-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="node-label">4. Tumor Staging</div>
+                </div>
+                <div id="node-5.6.5" class="path-node locked theme-cyan" onclick="showPreview('5.6.5')">
+                    <div class="node-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <div class="node-label">5. Tumor Diagnosis</div>
+                </div>
+
+                <!-- REVIEW -->
+                <div class="unit-divider">
+                    <span class="unit-tag">REVIEW</span>
+                </div>
+
+                <div id="node-5.review" class="path-node locked theme-cyan" onclick="showPreview('5.review')">
+                    <div class="node-icon"><i class="fas fa-crown"></i></div>
+                    <div class="node-label">Chapter 5 Review</div>
+                </div>
+
+                <div id="node-celebration" class="path-node locked secret-theme hidden" onclick="handleSecretNodeClick()">
+                    <div class="node-icon"><i class="fas fa-question-circle"></i></div>
+                    <div class="node-label">???</div>
+                </div>
             </div>
             
         </section>
@@ -678,6 +802,18 @@
                     <ul id="modal-objectives"></ul>
                 </div>
                 <button id="start-lesson-btn" class="primary-btn">START LESSON</button>
+            </div>
+        </div>
+
+        <div id="celebration-overlay" class="modal-overlay hidden">
+            <div class="celebration-card">
+                <button class="close-celebration" onclick="closeCelebration()">✕</button>
+                <h2 id="celebration-title">PATHOLOGY MASTER!</h2>
+                <div id="meme-container">
+                    <!-- Random meme will be injected here -->
+                </div>
+                <p id="celebration-subtitle">You've finished PathoPlay! Thank you for playing!</p>
+                <button class="primary-btn" onclick="triggerMemeRoulette()">ROLL AGAIN</button>
             </div>
         </div>
 

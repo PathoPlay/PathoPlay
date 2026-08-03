@@ -54,6 +54,15 @@ function updateMapUI() {
             node.classList.add('unlocked');
         }
     });
+
+    const secretNode = document.getElementById('node-celebration');
+    if (unlockedModules.includes('celebration')) {
+        secretNode.classList.remove('hidden', 'locked');
+        secretNode.classList.add('unlocked');
+        secretNode.querySelector('.node-label').innerText = "The Secret Reward";
+        secretNode.querySelector('.node-icon i').className = "fas fa-gift";
+    }
+
     applyWindingPath();
 }
 updateMapUI();
@@ -194,8 +203,17 @@ function finishModule() {
             if (moduleContent[nextID] && !unlockedModules.includes(nextID)) {
                 unlockedModules.push(nextID);
                 localStorage.setItem('pathUnlocked', JSON.stringify(unlockedModules));
-                updateMapUI();
             }
+
+            if (currentActiveID === '5.review') {
+                // Unlock the secret node in the internal list
+                if (!unlockedModules.includes('celebration')) {
+                    unlockedModules.push('celebration');
+                    localStorage.setItem('pathUnlocked', JSON.stringify(unlockedModules));
+                }
+            }
+
+            updateMapUI();
 
             document.getElementById('stage').innerHTML = `
                 <div style="margin-top:30px; padding: 0 15px;">
@@ -787,5 +805,45 @@ function playFeedback(isCorrect) {
     sound.currentTime = 0; 
     sound.play().catch(error => {
         console.log("Audio playback delayed until user interaction.");
+    });
+}
+
+const instructorMemes = [
+    'assets/memes/drake_meme.png',
+    'assets/memes/distracted_boyfriend_meme.jpg',
+    'assets/memes/spiderman_pointing_meme.jpg',
+    'assets/memes/exploding_brain_meme.jpg'
+];
+
+function handleSecretNodeClick() {
+    const secretNode = document.getElementById('node-celebration');
+    if (secretNode.classList.contains('unlocked')) {
+        document.getElementById('celebration-overlay').classList.remove('hidden');
+        triggerMemeRoulette();
+        triggerConfetti(); // Optional: use a library like canvas-confetti
+    }
+}
+
+function triggerMemeRoulette() {
+    const container = document.getElementById('meme-container');
+    
+    // Pick a random meme
+    const randomIndex = Math.floor(Math.random() * instructorMemes.length);
+    const selectedMeme = instructorMemes[randomIndex];
+
+    // Inject the meme with a fade-in effect
+    container.innerHTML = `<img src="${selectedMeme}" class="fade-in" alt="Instructor Meme">`;
+}
+
+function closeCelebration() {
+    document.getElementById('celebration-overlay').classList.add('hidden');
+}
+
+function triggerConfetti() {
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ff9600', '#ffce00', '#ff5f5f'] // Use your app's theme colors
     });
 }

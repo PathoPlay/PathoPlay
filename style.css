@@ -474,3 +474,67 @@ h1, h2, h3, .node-label, .draggable-chip, .unit-tag, .option-btn, .match-btn {
     cursor: pointer;
     text-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
+
+/* Secret Node Styling */
+.path-node.secret-theme.unlocked {
+    background: linear-gradient(45deg, #ffd700, #ffae00);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    animation: glow-pulse 2s infinite;
+}
+
+@keyframes glow-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+}
+
+/* Celebration Card Styling */
+.celebration-card {
+    background: white;
+    width: 85%; /* Matches .modal-content */
+    max-width: 380px;
+    max-height: 85vh; /* Prevents card from going off-screen */
+    overflow-y: auto;
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    position: relative; /* Essential for the absolute exit button */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+#meme-container img {
+    width: 100%;
+    border-radius: 15px;
+    margin: 10px 0 20px 0;
+    border: 5px solid #f8f9fa;
+    display: block;
+}
+
+/* The class used in your app.js triggerMemeRoulette function */
+.fade-in {
+    animation: memeAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes memeAppear {
+    from { opacity: 0; transform: scale(0.9) rotate(-2deg); }
+    to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Consistency for Celebration Exit Button */
+.close-celebration {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ccc; /* Matches .close-modal */
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    transition: color 0.2s;
+}
+
+.close-celebration:hover {
+    color: var(--text);
+}
